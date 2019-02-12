@@ -1,0 +1,34 @@
+// @import "fonts";
+
+// Fonts
+$font1: 'Heebo', sans-serif;
+$font2: 'Poppins', sans-serif;
+
+// Colors
+$green: #61b01d;
+$blue: #00469b;
+$red: #c60023;
+$yellow: #f5a301;
+
+$primary: $blue;
+$primary-text: #fff;
+
+$secondary: $green;
+$secondary-text: #fff;
+
+$dark: #253137;
+$dark-text: #eaeaea;
+
+$font-dark: #212121;
+$font-light: #685f5f;
+$link-text: #3297d3;
+
+$greyUltraLight: #fafafa;
+$selectedOnWhite: #f6f7f9;
+$disabled: #9a9a9a;
+
+// Common CSS
+@import "base/all";
+
+// Style custom
+@import "site";

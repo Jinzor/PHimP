@@ -1,0 +1,40 @@
+body {
+  background-color: $body-bg;
+  font-family: $font1;
+  font-weight: 400;
+}
+
+.page {
+  height: 100%;
+}
+
+.btn {
+  font-family: $font1;
+}
+
+.btn > .ic {
+  font-size: 1.25rem;
+  line-height: 0;
+  vertical-align: -4px;
+}
+
+.btn-s > .ic {
+  font-size: 0.9rem;
+  vertical-align: -2px;
+}
+
+p > i.ic {
+  vertical-align: -1px;
+  margin-right: 2px;
+  line-height: 1;
+}
+
+i.ic {
+  vertical-align: -2px;
+  line-height: 1;
+}
+
+.no-result {
+  padding: $padding-wrapper;
+}
+

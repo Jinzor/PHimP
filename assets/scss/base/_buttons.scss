@@ -1,0 +1,232 @@
+.btn {
+  display: inline-block;
+  padding: 6px 12px 5px;
+  outline: 0;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.btn:hover,
+.btn:focus,
+.btn.focus {
+  text-decoration: none;
+}
+
+.btn:active,
+.btn.active {
+  background-image: none;
+  outline: 0;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.btn-l {
+  padding: 10px 16px;
+  font-size: 1.2rem;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+
+.btn-m {
+  padding: 5px 10px;
+  font-size: 0.96rem;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-s {
+  padding: 2px 5px 1px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn.btn-valid {
+  background-color: #58BB65;
+  border-color: #4C9C57;
+  color: #FFF;
+
+  &:hover, &:active, &:focus {
+    background-color: #6BC778;
+    color: #FFF;
+  }
+
+  &.invert {
+    background-color: transparent;
+    color: #4C9C57;
+    border-color: #4C9C57;
+  }
+}
+
+.btn.btn-error {
+  background-color: #e74c3c;
+  border-color: #C5473A;
+  color: #FFF;
+
+  &:hover, &:active, &:focus {
+    background-color: #F76A5B;
+    border-color: #C75347;
+    color: #FFF;
+  }
+
+  &.invert {
+    background-color: transparent;
+    color: #e74c3c;
+    border-color: #C5473A;
+  }
+}
+
+.btn {
+  background-color: $secondary;
+  color: $secondary-text;
+  position: relative;
+
+  &:hover, &:focus, &:active {
+    background-color: lighten($secondary, 5);
+    color: lighten($secondary-text, 5);
+  }
+}
+
+.btn.bg {
+  background-color: $primary;
+  color: $primary-text;
+
+  &:hover, &:focus, &:active {
+    background-color: lighten($primary, 5);
+    color: lighten($primary-text, 5);
+  }
+
+  &.invert {
+    background-color: transparent;
+    color: $primary;
+    border-color: $primary;
+  }
+}
+
+.btn.gr {
+  background-color: #eaeaea;
+  border-color: #dcdcdc;
+  color: #333;
+
+  &:hover, &:active, &:focus {
+    background-color: #f4f4f4;
+    color: #111;
+  }
+}
+
+.btn.wh {
+  background-color: #fff;
+  border-color: #e0e0e0;
+  box-shadow: 0 1px 4px -2px rgba(0, 0, 0, 0.2);
+  color: #4f4f72;
+
+  &:hover {
+    border-color: #ccc;
+    box-shadow: 0 1px 6px -2px rgba(0, 0, 0, 0.25);
+  }
+
+  &:hover, &:active, &:focus {
+    background-color: #fcfcfc;
+    color: #111;
+  }
+
+  &:focus, &:active {
+    box-shadow: 0 0 1px rgba(0, 129, 238, 0.9);
+  }
+}
+
+.btn.disabled,
+.btn:disabled,
+.btn[disabled] {
+  background-color: #c3c3c3 !important;
+  border-color: #c0c0c0;
+  color: #f8f8f8 !important;
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: .9;
+
+  &:hover, &:active, &:focus {
+    background: #c3c3c3 !important;
+    color: #f8f8f8 !important;
+    box-shadow: none;
+  }
+}
+
+.btn-link {
+  background: none;
+  box-shadow: none;
+  color: $link-text;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  &:hover, &:active, &:focus {
+    background: none;
+    box-shadow: none;
+    color: lighten($link-text, 8);
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn.loading {
+  color: transparent !important;
+  pointer-events: none;
+
+  &::after {
+    @extend .spin;
+    position: absolute;
+    left: calc(50% - (1em / 2));
+    top: calc(50% - (1em / 2));
+    position: absolute !important;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+
+  > .btn.append:first-child {
+    padding-left: 6px;
+    border-radius: 4px 0 0 4px;
+    margin-right: 0;
+  }
+
+  > .btn.append + .btn.append {
+    border-radius: 0;
+    margin-left: -1px;
+    margin-right: 0;
+  }
+
+  > .btn.append:last-child,
+  > .btn.append + .btn.append:last-child {
+    border-radius: 0 4px 4px 0;
+    padding-right: 6px;
+    margin-right: 5px;
+  }
+
+  > .btn.append + .btn {
+    margin-left: 5px;
+  }
+
+  .btn, ._link {
+    margin-right: 5px;
+  }
+}

@@ -1,0 +1,227 @@
+label {
+  display: inline-block;
+  margin-bottom: .5rem;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  vertical-align: middle;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+textarea.input {
+  height: 80px;
+  line-height: 1.35;
+  max-width: 100%;
+}
+
+.select {
+  display: inline-block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: .375rem 1.75rem .375rem .75rem;
+  line-height: 1.5;
+  color: #495057;
+  vertical-align: middle;
+  background: #fff url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E") no-repeat right .75rem center;
+  background-size: auto auto;
+  background-size: 8px 10px;
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.select.loading {
+  background-color: #f0f0f0;
+  pointer-events: none;
+}
+
+.form-text {
+  display: block;
+  margin-top: .25rem;
+}
+
+.checkbox, .radio {
+  cursor: pointer;
+  display: inline-block;
+  line-height: 1.25;
+  position: relative;
+
+  input {
+    cursor: pointer;
+    margin-right: 4px;
+    vertical-align: -3px;
+  }
+
+  &:disabled, &:disabled {
+    color: $disabled;
+    cursor: not-allowed;
+  }
+}
+
+.custom-radio, .custom-checkbox {
+  position: absolute;
+  display: none;
+
+  + label {
+    position: relative;
+    display: block;
+    padding-left: 30px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+
+  + label::before {
+    border: 1px solid #c0c0c0;
+    position: absolute;
+    top: -2px;
+    left: 0;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    content: '';
+  }
+
+  + label::after {
+    position: absolute;
+    display: none;
+    content: '';
+  }
+
+  &:checked + label::before {
+    animation-name: none;
+    border-color: $primary;
+    background: $primary;
+  }
+
+  &:checked + label::after {
+    display: block;
+  }
+}
+
+.custom-checkbox {
+  + label::before {
+    border-radius: 3px;
+  }
+
+  + label::after {
+    top: 1px;
+    left: 7px;
+    box-sizing: border-box;
+    width: 6px;
+    height: 11px;
+    transform: rotate(45deg);
+    border: 0 solid #fff;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+  }
+}
+
+.custom-radio {
+  + label::before {
+    border-radius: 50%;
+  }
+
+  + label::after {
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $primary;
+  }
+}
+
+.btn.dropdown-btn {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 1 4 5'%3E%3Cpath fill='%23FFFFFF' d='M2 5L0 3h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 8px 10px;
+  padding-right: 28px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+
+  .input, .select {
+    position: relative;
+    margin-bottom: 0;
+    flex: 1 1 auto;
+    width: 1%;
+  }
+
+  &.prepend, &.append {
+    > div, a, span, button, .btn {
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
+
+  &.prepend {
+    > div, span {
+      line-height: 1.5;
+      padding: .375rem .5rem;
+    }
+
+    > div, a, span, button, .btn {
+      margin-right: -1px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    > input, > select {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  &.append {
+    > input, > select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+
+      + div, + a, + span, + button, + .btn {
+        margin-left: -1px;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+      }
+
+      + div, + span {
+        line-height: 1.5;
+        padding: .375rem .5rem;
+      }
+    }
+  }
+
+  .prepend {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+    margin-right: 0;
+  }
+
+  .append {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: 0;
+  }
+}

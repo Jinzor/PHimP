@@ -1,0 +1,14 @@
+RewriteEngine on
+
+RewriteBase /
+
+RewriteRule \.well-known - [L]
+
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Example
+# RewriteRule ^example/?$ index.php?p=example.index [L,QSA]
+
+# Pages par défaut
+RewriteRule ^([a-z0-9\-_]+)$ index.php?p=$1 [L,QSA]

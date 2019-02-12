@@ -1,0 +1,9 @@
+.idea
+vendor
+data/*
+/nbproject/
+/assets/css/*
+.sass-cache
+node_modules
+log
+tmp

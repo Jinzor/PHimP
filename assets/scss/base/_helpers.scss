@@ -1,0 +1,340 @@
+.color {
+  color: $primary;
+}
+
+.bg {
+  color: $primary-text;
+  background: $primary;
+}
+
+.dark {
+  color: $dark-text;
+  background: $dark;
+}
+
+.darker {
+  background: darken($dark, 3);
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.margin {
+  margin: 0 16px;
+}
+
+.big_margin {
+  margin: 0 150px;
+}
+
+.shadow {
+  box-shadow: 0 2px 12px -4px rgba(0, 0, 0, 0.35);
+}
+
+.error {
+  color: red;
+}
+
+.s_spacer {
+  display: block;
+  height: 0.375em;
+}
+
+.m_spacer {
+  display: block;
+  height: 1.125em;
+}
+
+.l_spacer {
+  display: block;
+  height: 2.5em;
+}
+
+.xl_spacer {
+  display: block;
+  height: 4.375em;
+}
+
+.xxl_spacer {
+  display: block;
+  height: 6.875em;
+}
+
+.transition {
+  -webkit-transition: all .2s;
+  -moz-transition: all .2s;
+  transition: all .2s;
+}
+
+.transition_opacity {
+  -webkit-transition: opacity .2s;
+  -moz-transition: opacity .2s;
+  transition: opacity .2s;
+}
+
+.transition_margin {
+  -webkit-transition: margin .2s;
+  -moz-transition: margin .2s;
+  transition: margin .2s;
+}
+
+.transition_background {
+  -webkit-transition: background .2s;
+  -moz-transition: background .2s;
+  transition: background .2s;
+}
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+  -o-transition: opacity .15s linear;
+  transition: opacity .15s linear;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.barre {
+  text-decoration: line-through;
+}
+
+.ln:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.lnc {
+  color: $link-text;
+}
+
+.lnc:hover {
+  color: lighten($link-text, 10);
+}
+
+._link {
+  @extend .ln;
+  @extend .lnc;
+  font-family: $font1;
+  background: transparent;
+}
+
+.u {
+  text-decoration: underline;
+}
+
+.b, strong, b {
+  font-weight: 600;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.i {
+  font-style: italic;
+}
+
+.dsp-none {
+  display: none;
+}
+
+.dsp-block {
+  display: block !important;
+}
+
+.nobg {
+  background: transparent !important;
+}
+
+.transparent {
+  zoom: 1;
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+}
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.no-border, .no-border:hover {
+  border: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
+
+.center {
+  text-align: center;
+}
+
+.vertical-center {
+  display: table;
+  width: 100%;
+
+  > div {
+    vertical-align: middle;
+    display: table-cell;
+  }
+}
+
+.wr::after,
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.mt {
+  margin-top: 16px;
+}
+
+.mb {
+  margin-bottom: 16px;
+}
+
+.ml {
+  margin-left: 16px;
+}
+
+.mr {
+  margin-right: 16px;
+}
+
+.card {
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  position: relative;
+  z-index: 100;
+
+  &.z1, &.z2, &.z3 {
+    box-shadow: none;
+
+    &:before, &:after {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  &.z1 {
+    z-index: 150;
+
+    &::before {
+      content: '';
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.32);
+    }
+
+    &::after {
+      content: '';
+      box-shadow: none;
+    }
+
+    > * {
+      position: relative;
+      z-index: 160;
+    }
+  }
+
+  &.z2 {
+    z-index: 200;
+
+    &::before {
+      content: '';
+      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.28);
+    }
+
+    &::after {
+      content: '';
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    > * {
+      position: relative;
+      z-index: 210;
+    }
+  }
+
+  &.z3 {
+    z-index: 300;
+
+    &::before {
+      content: '';
+      box-shadow: 0 13px 25px 0 rgba(0, 0, 0, 0.28);
+    }
+
+    &::after {
+      content: '';
+      box-shadow: 0 11px 7px 0 rgba(0, 0, 0, 0.17);
+    }
+
+    > * {
+      position: relative;
+      z-index: 310;
+    }
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.spin {
+  -webkit-animation: spin .5s infinite linear;
+  animation: spin .5s infinite linear;
+  border: 2px solid #dbdbdb;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-radius: 290486px;
+  content: "";
+  display: block;
+  height: 1em;
+  position: relative;
+  width: 1em;
+}
+
+.spinLoader {
+  transition: opacity .1s .3s ease;
+  opacity: 1;
+  @extend .spin;
+  border: 2px solid $primary;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  position: absolute;
+  left: calc(50% - (1em / 2));
+  position: absolute !important;
+  height: 1.5em;
+  width: 1.5em;
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
