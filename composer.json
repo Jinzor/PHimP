@@ -1,5 +1,6 @@
 {
   "require": {
+    "ext-pdo": "*",
     "php": ">=7.0",
     "phpmailer/phpmailer": "^6.0"
   },
