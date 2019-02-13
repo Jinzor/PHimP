@@ -29,7 +29,7 @@ scss assets/scss/style.scss assets/css/style.css
 
 ### Rewriting
 
-Use .htaccess to rewrite urls.
+Use .htaccess to rewrite urls (if Apache). You are free to use any other routing system.
 
 The *?p=* parameter is use to define the page, separating with a dot to call the Controller.
 
