@@ -2,54 +2,47 @@
 
 namespace App\Models;
 
-use App\Core\App;
-use App\Core\Auth;
-use App\Core\Dbg;
-use App\Core\Request;
+use App\Core\Log;
 use App\Core\Security;
-use App\Core\Sql;
 
-class User extends Root
+class User extends Model
 {
-    const TBNAME = 'utilisateurs';
-    const TBTOKEN = 'utilisateurs_token';
-    const LIBELLE = 'utilisateur';
+    const TBNAME = 'users';
+    const TBTOKEN = 'users_token';
     const TOKEN_KEY = '21y9BlPomqVZxz6p5pKwMFtH9GddwULlapx4Swma5JB=';
 
     public static $columns = [
         'id',
-        'nom',
+        'name',
         'email',
-        'societe',
-        'utilisateur',
-        'mdp',
-        'role',
-        'creation',
-        'actif',
+        'username',
+        'password',
+        'permission',
+        'created_at',
+        'last',
+        'active',
     ];
 
-    var $nom = '';
+    var $name = '';
     var $email = '';
-    var $utilisateur = '';
-    var $mdp = '';
-    var $role = '';
-    var $creation = 0;
-    var $last = 0;
-    var $actif = 1;
+    var $username = '';
+    var $password = '';
+    var $permission = '';
+    var $created_at;
+    var $last;
+    var $active = 1;
 
     /**
      * Vérifie si l'identifiant renseigné existe
      *
-     * @param string $identifiant
+     * @param string $username
      * @return bool
      */
-    public static function existingIdentifier($identifiant) {
-        if (!empty(trim($identifiant))) {
-            $res = Sql::select(self::TBNAME, ['utilisateur' => $identifiant]);
-            if ($res && $res->rowCount() > 0) {
-                return true;
-            }
+    public static function existingIdentifier($username) {
+        if (!empty(trim($username))) {
+            return !!User::find(['username' => $username]);
         }
+
         return false;
     }
 
@@ -59,46 +52,25 @@ class User extends Root
      * @param string $email
      * @return bool
      */
-    public static function existingEmail($email) {
+    public static function existingEmail(string $email) {
         if (!empty(trim($email))) {
-            $res = Sql::select(self::TBNAME, ['email' => $email]);
-            if ($res && $res->rowCount() > 0) {
-                return true;
-            }
+            return !!User::find(['email' => $email]);
         }
+
         return false;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl() {
-        if (App::getInstance()->auth()->hasRole(Auth::ROLE_ADMIN)) {
-            return route('admin.userView', $this->id);
-        }
-        return '';
-    }
-
-    /**
-     * @return bool|int
-     */
-    public function save() {
-        if ($this->id == 0) {
-            $this->creation = time();
-        }
-        return parent::save();
     }
 
     /**
      * Vérifie si le mot de passe est correct.
      *
-     * @param $requestedPassword
+     * @param string $requestedPassword
      * @return bool
      */
-    public function checkPassword($requestedPassword) {
-        if (Security::checkPassword($requestedPassword, $this->mdp)) {
+    public function checkPassword(string $requestedPassword) {
+        if (Security::checkPassword($requestedPassword, $this->password)) {
             return true;
         }
+
         return false;
     }
 
@@ -107,7 +79,7 @@ class User extends Root
      * @return bool|int
      */
     public function changePassword($password) {
-        $this->mdp = Security::crypt($password);
+        $this->password = Security::crypt($password);
         return $this->save();
     }
 
@@ -117,30 +89,26 @@ class User extends Root
      * @throws \Exception
      */
     public function saveData(array $data) {
-        if (peutGererUtilisateurs(App::getInstance()->auth())) {
-
-            if ($this->id == 0) { // Création
-                if (isset($data['password']) && !empty($data['password'])) {
-                    $mdp = $data['password'];
-                    if (isset($data['mdp_confirm'])) {
-                        $mdp_confirm = $data['mdp_confirm'];
-                        if ($mdp != $mdp_confirm) {
-                            throw new \Exception('Les mots de passe saisies ne correspondent pas.');
-                        }
+        if ($this->id == 0) { // Création
+            if (isset($data['password']) && !empty($data['password'])) {
+                $pass = $data['password'];
+                if (isset($data['confirm'])) {
+                    $confirm = $data['confirm'];
+                    if ($pass != $confirm) {
+                        throw new \Exception('Les mots de passe saisies ne correspondent pas.');
                     }
-                    $data['mdp'] = Security::crypt($mdp);
-                } else {
-                    $data['mdp'] = null;
                 }
-
-                if (User::existingEmail($data['email']) || User::existingIdentifier($data['utilisateur'])) {
-                    throw new \Exception('Un utilisateur avec cet identifiant/email existe déjà.');
-                }
+                $data['password'] = Security::crypt($pass);
+            } else {
+                $data['password'] = null;
             }
 
-            return parent::saveData($data);
+            if (User::existingEmail($data['email']) || User::existingIdentifier($data['username'])) {
+                throw new \Exception('Un utilisateur avec cet identifiant/email existe déjà.');
+            }
         }
-        throw new \Exception(Request::ERROR_NOT_AUTHORIZED);
+
+        return parent::saveData($data);
     }
 
     /**
@@ -149,8 +117,8 @@ class User extends Root
      * @return string
      */
     public function generateToken() {
-        $key = Security::generateRandomToken(32);
-        if ($this->mdp == null) {
+        $key = Security::randomToken(32);
+        if ($this->password == null) {
             $expire = 0;
         } else {
             $expire = (time() + 1800); // 30 minutes
@@ -166,22 +134,22 @@ class User extends Root
      * @param int $uId (optional)
      * @return bool
      */
-    public static function checkToken($token, $uId = null) {
+    public static function checkToken(string $token, $uId = null) {
         list ($key, $userId, $expire, $mac) = explode(':', $token);
 
         if ($expire > 0 && $expire < time()) {
-            Dbg::logs('Token expiré');
+            Log::logs('Token expiré');
             return false;
         }
 
         $usr = new User($userId);
-        if (($uId != null && $uId != $userId) || $usr->actif == 0) {
-            Dbg::logs('Token non correspondant à l\'utilisateur');
+        if (($uId != null && $uId != $userId) || $usr->active == 0) {
+            Log::logs('Token non correspondant à l\'utilisateur');
             return false;
         }
 
-        if ($expire == 0 && !is_null($usr->mdp) && !empty($usr->mdp)) {
-            Dbg::logs('Password already set');
+        if ($expire == 0 && !is_null($usr->password) && !empty($usr->password)) {
+            Log::logs('Password already set');
             return false;
         }
 

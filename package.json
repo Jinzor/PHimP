@@ -6,8 +6,8 @@
   },
   "scripts": {
     "build": "npm run common && npm run main",
-    "common": "babel assets/js/common.js > assets/js/dist/common.js --presets=minify",
-    "main": "babel assets/js > assets/js/dist/main.js --ignore assets/js/dist --ignore assets/js/common.js"
+    "common": "babel public/assets/js/common.js > public/assets/js/dist/common.js --presets=minify",
+    "main": "babel public/assets/js > public/assets/js/dist/main.js --ignore public/assets/js/dist --ignore public/assets/js/common.js"
   },
   "author": "loc.brisset@gmail.com",
   "dependencies": {

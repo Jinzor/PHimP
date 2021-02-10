@@ -7,10 +7,10 @@ use App\Core\App;
 class Controller
 {
     protected $app;
-    protected $layout = 'master';
+    protected $layout = 'backoffice';
     protected $section = '';
     protected $async = false;
-    protected $requireAuth = true;
+    protected $requireAuth = false;
     protected $requireRole = [];
     protected $path = ROOT . "views";
 
@@ -25,8 +25,9 @@ class Controller
             if (!$this->app->auth()->loginFromCookie()) { // Tentative de reconnexion via "remember me"
                 if ($this->async) { // Affiche d'une erreur si appel en Ajax
                     $this->error_401();
-                } else { // Sinon simple redirection vers la page de login
-                    $this->redirect(route('auth.pageLogin') . '&redirect=https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], [
+                } else {
+                    // Sinon simple redirection vers la page de login
+                    $this->redirect(route('auth.login') . '&redirect=https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], [
                         'error' => 'Connectez vous pour accéder à la page',
                     ]);
                 }

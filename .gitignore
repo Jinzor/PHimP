@@ -2,8 +2,9 @@
 vendor
 data/*
 /nbproject/
-/assets/css/*
+public/assets/css/*.map
 .sass-cache
 node_modules
 log
 tmp
+.env

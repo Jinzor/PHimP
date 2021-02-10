@@ -1,0 +1,42 @@
+RewriteEngine on
+
+Options -Indexes
+
+# Lets Encrypt validation
+RewriteRule \.well-known - [L]
+
+# Redirection HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# BEGIN Cache-Control Headers
+<IfModule mod_headers.c>
+
+    <FilesMatch "\.(ico|jpe?g|png|gif|swf|gz|ttf|mp3|ogg|svg)$">
+        Header set Cache-Control "max-age=2500000, public"
+    </FilesMatch>
+    <FilesMatch "\.(css)$">
+        Header set Cache-Control "max-age=2500000, public"
+    </FilesMatch>
+    <FilesMatch "\.(js)$">
+        Header set Cache-Control "max-age=2500000, private"
+    </FilesMatch>
+    # Disable caching for scripts and other dynamic files
+    <FilesMatch "\.(pl|php|cgi|spl|scgi|fcgi)$">
+        Header unset Cache-Control
+    </FilesMatch>
+
+</IfModule>
+# END Cache-Control Headers
+
+# BEGIN Compression
+<IfModule mod_deflate.c>
+    Addtype font/truetype .ttf
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript image/jpeg image/png font/truetype
+</IfModule>
+# END Compression
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+RewriteRule ^(.*)$ index.php [L,QSA]

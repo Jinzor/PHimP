@@ -2,19 +2,8 @@
 
 namespace App\Core;
 
-/**
- * Fonction de log et débuggage
- *
- * @author Aurélien
- */
-class Dbg
+class Log
 {
-    /**
-     * Buffer logs text
-     *
-     * @var array
-     */
-    static $logsl = [];
     /**
      * Message type notice
      */
@@ -40,6 +29,9 @@ class Dbg
      */
     const L_DEBUG = '1;90';
 
+    /** @var bool */
+    private static $useDaysAsFile = false;
+
     /**
      * @param string $msg
      * @param int|string $level
@@ -51,18 +43,16 @@ class Dbg
             $msg = print_r($msg, true);
         }
 
+        if (is_object($msg) && !method_exists($msg, '__tostring')) {
+            $msg = Str::displayRawJson($msg);
+        }
+
         if (is_int($level)) {
             $level = self::colorize($level);
         }
         $ms = substr(microtime(true) - time(), 2, 2);
         $content = "\e[1;90m" . date('H:i:s') . ".$ms | " . (App::getInstance()->auth()->user ? App::getInstance()->auth()->user->id : '-') . " | \e[" . $level . "m" . $msg . "\e[0m\n";
-        /*
-        if ($level < LOG_DEBUG) {
-            openlog("Territoria", LOG_PID, LOG_LOCAL0);
-            syslog($level, $msg);
-            closelog();
-        }
-        */
+
         return file_put_contents(self::getFileName(), $content, FILE_APPEND);
     }
 
@@ -108,9 +98,11 @@ class Dbg
      * @return string
      */
     static public function getPath() {
-        $filePath[0] = ROOT . 'data/logs/';
-        $filePath[1] = $filePath[0] . date('Y') . '/';
-        $filePath[2] = $filePath[1] . date('m') . '/';
+        $filePath = [ROOT . 'data/logs/'];
+        if (self::$useDaysAsFile) {
+            $filePath[1] = $filePath[0] . date('Y') . '/';
+            $filePath[2] = $filePath[1] . date('m') . '/';
+        }
 
         foreach ($filePath as $fp) {
             if (!file_exists($fp)) {
@@ -119,11 +111,18 @@ class Dbg
             }
         }
 
-        return $filePath[2];
+        return end($filePath);
     }
 
+    /**
+     * @return string
+     */
     public static function getFileName() {
-        return self::getPath() . date('d') . '.txt';
+        $filename = 'debug.log';
+        if (self::$useDaysAsFile) {
+            $filename = date('d') . '.log';
+        }
+        return self::getPath() . $filename;
     }
 
 }

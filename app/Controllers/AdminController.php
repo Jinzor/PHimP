@@ -2,20 +2,18 @@
 
 namespace App\Controllers;
 
+use App\Core\Auth;
+
 class AdminController extends Controller
 {
     protected $layout = 'master';
     protected $section = 'admin';
+    protected $requireAuth = true;
+    protected $requireRole = [Auth::ROLE_ADMIN];
 
-    public function __construct() {
-        parent::__construct();
-        if (peutAccederAdmin($this->app->auth()) === false) {
-            $this->error_403();
-            exit();
-        }
-    }
-
-    public function index() {
-        //
+    public function dashboard() {
+        $this->render('dashboard.index', [
+            'a' => 'b',
+        ]);
     }
 }

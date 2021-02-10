@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Core\Database\DatabaseConnector;
+
 /**
  * Class App
  *
@@ -9,9 +11,14 @@ namespace App\Core;
  */
 class App
 {
+    /** @var App */
     private static $_instance;
 
-    protected $auth;
+    /** @var Auth */
+    private $auth;
+
+    /** @var DatabaseConnector */
+    private $database;
 
     const SESSION_ALERT = 'flash_message';
 
@@ -25,6 +32,9 @@ class App
         return self::$_instance;
     }
 
+    /**
+     * @return Auth
+     */
     public function auth() {
         if (is_null($this->auth)) {
             $this->auth = new Auth();
@@ -32,6 +42,19 @@ class App
         return $this->auth;
     }
 
+    /**
+     * @return DatabaseConnector
+     */
+    public function db() {
+        if (is_null($this->database)) {
+            $this->database = new DatabaseConnector(getenv('MYSQL_DB'), getenv('MYSQL_USER'), getenv('MYSQL_PASS'), getenv('MYSQL_HOST'), isDev());
+        }
+        return $this->database;
+    }
+
+    /**
+     * @param $data
+     */
     public function setAlert($data) {
         if (!is_array($data) || key($data) === 0) {
             $data['message'] = $data;
@@ -39,6 +62,10 @@ class App
         $_SESSION[self::SESSION_ALERT] = $data;
     }
 
+    /**
+     * @param string $key
+     * @return mixed
+     */
     public function getAlert($key = '') {
         if (isset($_SESSION[self::SESSION_ALERT]) && !empty($_SESSION[self::SESSION_ALERT])) {
             $alerts = $_SESSION[self::SESSION_ALERT];

@@ -12,20 +12,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="robots" content="noindex">
-    <link rel="manifest" href="<?= site_url() ?>manifest.json">
+    <link rel="manifest" href="<?= url() ?>manifest.json">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Example</title>
     <link rel="stylesheet" href="<?= resource('css', 'style.css', true) ?>">
     <script src="<?= resource('js', 'dist/common.js', true); ?>"></script>
-    <script>var baseurl = '<?= site_url() ?>';</script>
-    <script src="<?= site_url() ?>node_modules/js-polyfills/polyfill.min.js"></script>
+    <script>var baseurl = '<?= url() ?>';</script>
+    <script src="<?= url() ?>node_modules/js-polyfills/polyfill.min.js"></script>
 </head>
 
 <body>
 
 <header class="card">
     <div class="logo-holder">
-        <a href="<?= site_url(); ?>" class="href">
+        <a href="<?= url(); ?>" class="href">
             <!-- logo -->
         </a>
     </div>

@@ -1,0 +1,387 @@
+.table {
+  background: #fff;
+}
+
+.table-list {
+  display: table;
+  font-size: 0.875rem;
+  color: #46465c;
+  width: 100%;
+  min-width: 100%;
+  position: relative;
+
+  .row, .row-head, tr {
+    display: table-row;
+    width: 100%;
+    min-width: 100%;
+
+    > div, td, th {
+      display: table-cell;
+      height: 48px;
+      vertical-align: middle;
+      padding: 2px 8px;
+      border-bottom: 1px solid #ededed;
+
+      @media(max-width: $width-m) {
+        .tag, .badge {
+          max-width: 100px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .idcol {
+      padding: 0 4px;
+      color: $font-light;
+      text-align: center;
+      font-size: 0.875em;
+      position: relative;
+      width: 32px;
+      max-width: 32px;
+    }
+
+    .idcol:hover {
+      .row-checkbox-custom-border {
+        opacity: 1;
+      }
+
+      .row-checkbox {
+        // opacity: 1;
+      }
+
+      .row-id {
+        opacity: 0;
+      }
+    }
+
+    .row-checkbox {
+      position: absolute;
+      left: 5px;
+      margin-top: -1px;
+      opacity: 0;
+      z-index: 100;
+      display: none;
+
+      &:checked {
+        + label.row-checkbox-custom > svg {
+          display: block;
+        }
+      }
+    }
+
+    .row-checkbox-custom {
+      position: relative;
+      display: flex;
+      margin: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 24px;
+
+      &:focus .row-checkbox-custom-border {
+        border-color: #aaa;
+      }
+
+      > svg {
+        height: 18px;
+        width: 18px;
+        fill: $primary;
+        margin: auto;
+        display: none;
+        pointer-events: none;
+      }
+
+      .row-checkbox-custom-border {
+        position: absolute;
+        top: 1px;
+        left: 0;
+        right: 0;
+        width: 22px;
+        height: 22px;
+        border: 2px solid #ddd;
+        margin: auto;
+        border-radius: 10000px;
+        opacity: 0;
+
+        &:hover {
+          border-color: #aaa;
+        }
+      }
+    }
+
+    .idcol, .nomin {
+      min-width: auto;
+    }
+
+    .narrow {
+      width: 32px;
+      min-width: 32px;
+    }
+
+    small.small {
+      font-size: 0.875em;
+      color: $font-light;
+    }
+  }
+
+  .row.selected {
+    .row-id {
+      opacity: 0;
+    }
+  }
+
+  .row:last-child > div {
+    border-bottom: 0;
+  }
+
+  &.clickable {
+    .row {
+      transition: background .15s;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      cursor: pointer;
+
+      &:hover {
+        color: #111;
+        background: transparentize($primary, 0.95) !important;
+
+        .row-checkbox-custom-border {
+          opacity: 1 !important;
+        }
+      }
+
+      &.selected {
+        background: transparentize($primary, 0.85) !important;
+        color: $font-dark;
+
+        > div {
+          border-color: darken(transparentize($primary, 0.85), 10);
+        }
+      }
+    }
+  }
+
+  .row-head {
+    color: #fff;
+    background: $secondary;
+
+    &.nobg {
+      color: $font-light;
+    }
+
+    > div {
+      font-weight: 600;
+      border-color: #ddd;
+      line-height: 1.2;
+    }
+
+    .action-cell {
+      padding-top: 15px;
+      padding-bottom: 15px;
+
+      > input, select, label {
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .row-group {
+    display: table-row-group;
+    background: #fff;
+    width: 100%;
+  }
+
+  &.nobg .row-group {
+    background: transparent;
+  }
+
+  .field .value {
+    padding: 6px 8px;
+  }
+}
+
+#select-all-rows {
+  font-size: 16px;
+  cursor: pointer;
+
+  &.active {
+    color: $green;
+  }
+}
+
+.row-head:not(.nobg) {
+  #select-all-rows {
+    color: rgba(255, 255, 255, 0.8);
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+table.table-list {
+  tr {
+    td {
+      background: #fff;
+    }
+
+    th {
+      text-align: left;
+      color: $font-light;
+      font-weight: 600;
+      border-color: #ddd;
+      line-height: 1.2;
+    }
+  }
+}
+
+.table-list.striped {
+  .row:not(.selected):nth-child(2n) {
+    background: $greyUltraLight;
+  }
+}
+
+.table-list.fixed-head {
+  display: block;
+  height: 100%;
+
+  .row-group {
+    display: block;
+    height: calc(100% - 48px);
+    overflow: auto;
+  }
+
+  /*
+    .row-head {
+      position: fixed;
+      top: 96px;
+      background: #eee;
+      z-index: 110;
+      width: auto;
+      min-width: auto;
+    }
+  */
+
+  .row > div,
+  .row-head > div {
+    min-width: 80px;
+
+    &.idcol {
+      position: relative;
+    }
+
+    &.nomin, &.idcol {
+      min-width: auto;
+    }
+
+    &.narrow {
+      width: 35px;
+      min-width: 35px;
+      overflow: hidden;
+      max-width: 35px;
+    }
+  }
+}
+
+.row.colorized,
+.table-list tr.colorized td {
+  background: $selectedOnWhite;
+}
+
+.row.disabled:not(.selected),
+.table-list tr.disabled td {
+  background: $greyUltraLight;
+  color: $disabled !important;
+
+  .multiline .desc {
+    color: $disabled;
+  }
+
+  ._link {
+    color: $disabled;
+  }
+
+  .subline {
+    color: lighten($disabled, 8);
+  }
+}
+
+.row.error {
+  background: #fff2f2;
+
+  .value {
+    color: $red;
+  }
+}
+
+.table-list {
+  .multiline {
+    span {
+      display: block;
+      margin: 0;
+      text-overflow: ellipsis;
+      width: 100%;
+      overflow: hidden;
+      // white-space: nowrap;
+    }
+
+    .desc {
+      color: $font-light;
+    }
+  }
+}
+
+.list-image {
+  width: 80px;
+
+  > img {
+    max-width: 100%;
+    height: 80px;
+  }
+}
+
+.row .cell-validation {
+  border-left: 1px solid #ededed;
+  text-align: center;
+}
+
+.row div .subline,
+.table-list td .subline {
+  color: $text-color-gray;
+  font-size: 0.875rem;
+}
+
+.table-list.loading .row > div {
+  border-color: transparent;
+}
+
+.table-numeric-right {
+  text-align: right !important;
+  @media (min-width: $width-m) {
+    padding-right: 30px !important;
+  }
+}
+
+.table-list .btn-detail {
+  height: 25px;
+  width: 25px;
+
+  > * {
+    pointer-events: none !important;
+  }
+}
+
+.table-list .row:last-child .dropdown-menu.active {
+  position: fixed;
+  right: $padding-wrapper + 8px;
+}
+
+.table-list .tag {
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}

@@ -1,0 +1,75 @@
+
+.login-form {
+  max-width: 500px;
+  margin: 12vh auto;
+  width: 100%;
+
+  .wrapper-inner {
+    @extend .card;
+    padding: 4rem;
+
+    @media (max-width: $width-m) {
+      padding: $padding-wrapper;
+    }
+  }
+
+  .title {
+    color: $font-light;
+    margin-bottom: 3rem;
+    @media (max-width: $width-m) {
+      margin-bottom: $padding-wrapper;
+    }
+  }
+
+  .field {
+    border: none !important;
+
+    &.text-right {
+      justify-content: flex-end;
+    }
+
+    &.dir-vertical label {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: .25rem;
+      letter-spacing: 0.07em;
+      width: 100%;
+    }
+  }
+
+  .logo-holder {
+    text-align: center;
+    padding: 0 0 4rem;
+    @media (max-width: $width-m) {
+      padding-bottom: $padding-wrapper;
+    }
+
+    > img {
+      width: 200px;
+      max-width: 100%;
+    }
+  }
+
+  .error-message, .success-message {
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .error-message {
+    color: $red;
+  }
+
+  .success-message {
+    color: $green;
+  }
+
+  .btn {
+    width: 100%;
+    font-family: $font2;
+    font-weight: 600;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+
+}

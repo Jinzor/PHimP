@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Core\Database\Sql;
 use App\Models\User;
 
 class Auth
@@ -14,7 +15,7 @@ class Auth
     const COOKIE_REMEMBERME = 'rememberme';
     const AUTH_KEY = '9ab8IiAuCdRcpqGs1TpGFxXNOUgwZCqyzuLW7qrcSFM=';
 
-    const ROLE_ADMIN = 'administrateur';
+    const ROLE_ADMIN = 'admin';
 
     static $roles = [
         self::ROLE_ADMIN,
@@ -76,20 +77,20 @@ class Auth
                         $this->auth($user, $remember);
                         return $user;
                     } catch (\Exception $e) {
-                        Dbg::error('Tentative de connexion ' . $username . ' FAILED : ' . $e->getMessage());
+                        Log::error('Tentative de connexion ' . $username . ' FAILED : ' . $e->getMessage());
                         return false;
                     }
                 } else {
-                    Dbg::error('Tentative de connexion ' . $username . ' FAILED : mot de passe incorrect');
+                    Log::error('Tentative de connexion ' . $username . ' FAILED : mot de passe incorrect');
                     return false;
                 }
             } else {
-                Dbg::error('Compte non activé');
+                Log::error('Compte non activé');
                 return false;
             }
         }
 
-        Dbg::error('Tentative de connexion ' . $username . ' FAILED : compte inexistant');
+        Log::error('Tentative de connexion ' . $username . ' FAILED : compte inexistant');
         return false;
     }
 
@@ -99,13 +100,13 @@ class Auth
      * @throws \Exception
      */
     private function auth(User $user, bool $remember = false) {
-        $now = time();
-        if ($user instanceof User && $user->id > 0 && $user->actif) {
+        $now = new \DateTime();
+        if ($user instanceof User && $user->id > 0 && $user->active) {
             $_SESSION[self::SESSION_AUTH_ID] = $user->id;
-            $_SESSION[self::SESSION_AUTH_NOM] = $user->nom;
-            $_SESSION[self::SESSION_AUTH_UTILISATEUR] = $user->utilisateur;
+            $_SESSION[self::SESSION_AUTH_NOM] = $user->name;
+            $_SESSION[self::SESSION_AUTH_UTILISATEUR] = $user->username;
             $_SESSION[self::SESSION_AUTH_EMAIL] = $user->email;
-            $_SESSION[self::SESSION_AUTH_ROLE] = $user->role;
+            $_SESSION[self::SESSION_AUTH_ROLE] = $user->permission;
 
             Sql::update(User::TBNAME, ['last' => $now], $user->id);
             $this->user = $user;
@@ -114,7 +115,7 @@ class Auth
                 self::rememberMe($user);
             }
 
-            Dbg::success('Tentative de connexion : ' . $user->utilisateur . ' SUCCESS');
+            Log::success('Tentative de connexion : ' . $user->username . ' SUCCESS');
         } else {
             throw new \Exception('Utilisateur inexistant ou inactif');
         }
@@ -126,7 +127,7 @@ class Auth
     public function loginFromCookie() {
         $cookie = isset($_COOKIE[self::COOKIE_REMEMBERME]) ? $_COOKIE[self::COOKIE_REMEMBERME] : '';
         if ($cookie && !empty($cookie)) {
-            list ($userId, $token, $mac) = explode(':', $cookie);
+            [$userId, $token, $mac] = explode(':', $cookie);
             if (!hash_equals(hash_hmac('sha256', $userId . ':' . $token, self::AUTH_KEY), $mac)) {
                 return false;
             }
@@ -139,13 +140,13 @@ class Auth
                             $this->auth($user);
                             return true;
                         } catch (\Exception $e) {
-                            Dbg::warning('Remember me login : ' . $e->getMessage());
+                            Log::warning('Remember me login : ' . $e->getMessage());
                         }
                     }
                 }
-                Dbg::warning('Remember me login : incorrect token');
+                Log::warning('Remember me login : incorrect token');
             } else {
-                Dbg::warning('Remember me login : incorrect user');
+                Log::warning('Remember me login : incorrect user');
             }
         }
         return false;
@@ -156,13 +157,13 @@ class Auth
      * @return bool
      */
     private static function rememberMe(User $user) {
-        $token = Security::generateRandomToken(128);
+        $token = Security::randomToken(128);
         $res = Sql::insert(User::TBTOKEN, ['id_user' => $user->id, 'token' => $token]);
         if ($res !== false) {
             $cookie = $user->id . ':' . $token;
             $mac = hash_hmac('sha256', $cookie, self::AUTH_KEY);
             $cookie .= ':' . $mac;
-            Dbg::debug('SET cookie data');
+            Log::debug('SET cookie data');
             return setcookie(self::COOKIE_REMEMBERME, $cookie);
         }
         return false;
@@ -188,7 +189,7 @@ class Auth
     public function hasRole($role) {
         $auth = App::getInstance()->auth();
         if (!empty($role) && $auth->user) {
-            return $auth->user->role === $role;
+            return $auth->user->permission === $role;
         }
         return false;
     }

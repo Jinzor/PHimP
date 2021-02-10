@@ -7,14 +7,14 @@ class Security
     const CRYPTO_ALGO = 'aes-256-cbc';
     const CRYPTO_VECTOR_SIZE = 16;
     const CRYPTO_KEY_SIZE = 32;
-    const KEY = '1650-Jd7dk*rqS4420:xljFVk789/3$v8'; // TODO change the key
+
+    const KEY = '1650-5d41*rqS4420:xljFVk789/3$v8'; // TODO change the key
 
     /**
      * Chiffrage
      *
      * @param string $data
      * @return string
-     * @assert ("test") !== false
      */
     public static function crypt(string $data) { // fonction de cryptage
         if (in_array(substr($data, 0, 1), ['!', '*', '#'])) { // déja crypté
@@ -28,7 +28,6 @@ class Security
      *
      * @param string $data
      * @return string
-     * @assert ("test") !== false
      */
     public static function decrypt(string $data) {
 
@@ -121,33 +120,15 @@ class Security
      * @assert () !== false
      */
     public static function randomHexStr(int $length = 40) {
-        return self::randomize('0123456789abcdef', $length);
+        return self::random($length, '0123456789abcdef');
     }
 
     /**
-     *
-     * @param int $length
+     * @param $keyspace
+     * @param $length
      * @return string
-     * @assert () !== false
      */
-    public static function randomAlphaNumStr(int $length = 40) {
-        $keyspace = 'abcdefghijklmnopqrstuvwxyz'
-            . 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-            . '0123456789';
-        return self::randomize($keyspace, $length);
-    }
-
-    /**
-     *
-     * @param int $length
-     * @return string
-     * @assert () !== false
-     */
-    public static function randomIntStr(int $length = 40) {
-        return self::randomize('0123456789', $length);
-    }
-
-    private static function randomize($keyspace, $length) {
+    public static function random($length = 16, $keyspace = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') {
         $str = '';
         $max = mb_strlen($keyspace, '8bit') - 1;
 
@@ -158,6 +139,11 @@ class Security
         return $str;
     }
 
+    /**
+     * @param $pass1
+     * @param $pass2
+     * @return bool
+     */
     public static function checkPassword($pass1, $pass2) {
         // TODO Vérification avec mot de passe crypté uniquement
         if ($pass1 == $pass2 || Security::decrypt($pass1) == $pass2 || Security::decrypt($pass2) == $pass1) {
@@ -170,11 +156,11 @@ class Security
      * @param int $length
      * @return string
      */
-    public static function generateRandomToken($length = 128): string {
+    public static function randomToken($length = 128): string {
         try {
             return bin2hex(random_bytes($length));
         } catch (\Exception $e) {
-            Dbg::error($e->getMessage());
+            Log::error($e->getMessage());
         }
         return '';
     }

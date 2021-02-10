@@ -1,0 +1,183 @@
+.master {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+
+  .content {
+    flex: 1 auto;
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+
+    .scrollable-content {
+      overflow: auto;
+      max-height: 100%;
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .scrollable-content-w {
+      overflow-x: auto;
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .content-top {
+      height: 64px;
+      padding: 0 $padding-wrapper;
+      z-index: 50;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      border-bottom: 1px solid #e7e7e7;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+
+      @media (max-width: $width-m) {
+        padding: 0 12px;
+      }
+
+      > div, .title, &.big > div > div, .modal-on-mobile > div {
+        flex-direction: row;
+        display: flex;
+        align-items: baseline;
+
+        label {
+          padding-right: 8px;
+          margin: 0;
+        }
+      }
+
+      > .right {
+        float: none;
+        margin-left: auto;
+      }
+
+      &:not(.big) > div,
+      .title, > .btn,
+      &.big > div > div,
+      &.big > div > .btn,
+      .modal-on-mobile > div {
+        margin-right: 10px;
+        z-index: 75;
+      }
+
+      .action-right {
+        flex: 1 1;
+        justify-content: flex-end;
+        margin: 0 !important;
+      }
+
+      > div:last-child, .modal-on-mobile > div:last-child {
+        margin-right: 0;
+      }
+
+      & + .scrollable-content {
+        height: calc(100% - 64px);
+      }
+
+      .title {
+        flex: 1;
+        font-size: 1.35rem !important;
+        font-weight: 600;
+        margin: 0;
+
+        @media (max-width: $width-m) {
+          font-size: 1.15rem !important;
+        }
+
+        > a {
+          margin-right: 8px;
+        }
+      }
+
+      .btn-back {
+        margin-right: 15px;
+      }
+
+      @media (max-width: $width-m) {
+        height: auto !important;
+        padding: 12px !important;
+      }
+    }
+
+    .content-top.big {
+      height: 96px;
+      flex-direction: column;
+      align-items: initial;
+      border-bottom: none;
+      box-shadow: none;
+
+      > div {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: end;
+        align-items: flex-end;
+
+        .title {
+          margin-bottom: 4px;
+        }
+      }
+
+      & + .scrollable-content {
+        height: calc(100% - 96px);
+      }
+
+      @media (max-width: $width-m) {
+        flex-direction: column !important;
+        align-items: initial !important;
+        > div {
+          flex-direction: column !important;
+          align-items: normal !important;
+          margin: 0 !important;
+
+          > div, > .btn {
+            margin: 0 0 10px !important;
+          }
+        }
+      }
+    }
+
+    .content-top.small {
+      height: 48px;
+      align-items: flex-end;
+      border-bottom: none;
+      box-shadow: none;
+
+      & + .scrollable-content {
+        height: calc(100% - 48px);
+      }
+
+      @media (max-width: $width-m) {
+        flex-direction: column !important;
+        align-items: initial !important;
+        > div {
+          flex-direction: row !important;
+          align-items: center !important;
+          margin: 0 0 10px !important;
+        }
+      }
+    }
+
+  }
+
+  .wrapper {
+    padding: $padding-wrapper;
+    position: relative;
+    @media (max-width: $width-m) {
+      padding: 12px;
+    }
+  }
+
+}
+
+.card-block {
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.1), 0 3px 6px 0 rgba(0, 0, 0, .07);
+}

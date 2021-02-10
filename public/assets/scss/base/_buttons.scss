@@ -198,35 +198,3 @@
     position: absolute !important;
   }
 }
-
-.actions {
-  display: flex;
-  flex-direction: row;
-
-  > .btn.append:first-child {
-    padding-left: 6px;
-    border-radius: 4px 0 0 4px;
-    margin-right: 0;
-  }
-
-  > .btn.append + .btn.append {
-    border-radius: 0;
-    margin-left: -1px;
-    margin-right: 0;
-  }
-
-  > .btn.append:last-child,
-  > .btn.append + .btn.append:last-child {
-    border-radius: 0 4px 4px 0;
-    padding-right: 6px;
-    margin-right: 5px;
-  }
-
-  > .btn.append + .btn {
-    margin-left: 5px;
-  }
-
-  .btn, ._link {
-    margin-right: 5px;
-  }
-}

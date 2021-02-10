@@ -1,0 +1,223 @@
+.upload-drop, label.upload-drop {
+  border: 3px dashed #bbc4d0;
+  border-radius: 6px;
+  padding: 15px !important;
+  width: 100%;
+  &.small-image {
+    img {
+      height: 100px;
+      width: auto;
+    }
+  }
+  &.highlight {
+    border-color: $primary;
+  }
+}
+
+label.upload-drop {
+  position: relative;
+  height: 150px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    height: calc(100% - 10px);
+    width: 100%;
+    object-fit: contain;
+    margin-bottom: 5px;
+  }
+
+  &.loading::after {
+    @extend .spin;
+    position: absolute;
+    border: 2px solid $primary;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    bottom: 6px;
+  }
+}
+
+.organization-logo, .organization-cover {
+  label.upload-drop {
+    width: 180px;
+  }
+}
+
+.upload-init {
+  > p {
+    margin-bottom: 2px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+}
+
+.upload-preview {
+
+  .preview {
+    padding: 5px 0;
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    > div {
+      padding: 5px 10px;
+      text-align: left;
+    }
+
+    > .preview-name {
+      flex: 2 1 auto;
+      font-size: 0.875rem;
+
+      .file-info {
+        font-weight: bold;
+        display: block;
+        margin-top: 2px;
+        margin-left: -2px;
+      }
+    }
+
+    .preview-action {
+      flex: 1 0;
+      text-align: right;
+
+      .icon-close {
+        color: #777;
+      }
+
+      &:hover .icon-close {
+        color: #222;
+      }
+    }
+
+    .preview-img {
+      position: relative;
+      width: 64px;
+      flex-basis: 64px;
+      flex: 0;
+      padding: 0;
+      border-radius: 6px;
+
+      img {
+        flex: 1;
+        max-height: 48px;
+        max-width: 48px;
+        height: 48px;
+        width: 48px;
+        object-fit: contain;
+        background: #fff;
+        border-radius: 3px;
+        transition: all .15s;
+
+        &:hover {
+          object-fit: cover;
+        }
+      }
+    }
+
+    &.loading .preview-img {
+      color: transparent !important;
+      pointer-events: none;
+
+      &::before {
+        content: '';
+        position: absolute;
+        background: rgba(0, 0, 0, 0.2);
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+
+        border-radius: 6px;
+      }
+
+      &::after {
+        @extend .spin;
+        position: absolute;
+        left: calc(50% - (1em / 2));
+        top: calc(50% - (1em / 2));
+        position: absolute !important;
+      }
+    }
+
+    .uploaded-file-status {
+      position: relative;
+      min-width: 16px;
+      display: inline-block;
+    }
+
+    &.loading .uploaded-file-status {
+      color: transparent !important;
+      pointer-events: none;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-radius: 6px;
+      }
+
+      &::after {
+        @extend .spin;
+        border: 2px solid $primary;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        position: absolute;
+        left: calc(50% - (1em / 2));
+        top: calc(50% - (1em / 2));
+        position: absolute !important;
+      }
+    }
+
+  }
+}
+
+.upload-progress {
+  progress {
+    height: 3px;
+    background: #eee;
+    border: none;
+    margin: auto;
+    width: 85%;
+  }
+
+  progress[value] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    color: #09c;
+    border: none;
+    border-radius: 10px;
+  }
+
+  progress[value]::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 10px;
+  }
+
+  progress[value]::-webkit-progress-value {
+    background-image: linear-gradient(to right, #3e7fcc, #00bcf6);
+    transition: all .2s;
+    border-radius: 10px;
+  }
+
+}
+
+.preview .badge {
+  font-size: 12px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-right: 5px;
+
+  i {
+    vertical-align: -2px;
+  }
+}

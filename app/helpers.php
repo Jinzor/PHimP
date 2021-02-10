@@ -1,7 +1,5 @@
 <?php
 
-use App\Core\Str;
-
 function dd(...$args) {
     ob_clean();
     http_response_code(500);
@@ -14,11 +12,19 @@ function dd(...$args) {
 }
 
 /**
+ * @param string $path
+ * @return string
+ */
+function url($path = '/') {
+    return getenv('DOMAIN') . getenv('RELATIVE_DIR') . $path;
+}
+
+/**
  * @param string $img
  * @return string
  */
 function image(string $img) {
-    return site_url() . 'assets/images/' . $img;
+    return url() . 'assets/images/' . $img;
 }
 
 /**
@@ -27,14 +33,7 @@ function image(string $img) {
  * @return string
  */
 function media(string $img, $absolute = false) {
-    return ($absolute ? ROOT : site_url()) . 'data/media/' . $img;
-}
-
-/**
- * @return string
- */
-function site_url() {
-    return URL;
+    return ($absolute ? ROOT : url()) . 'data/media/' . $img;
 }
 
 /**
@@ -44,47 +43,53 @@ function site_url() {
  * @return string
  */
 function resource($type, $file, $cachebusting = false) {
-    return site_url() . 'assets/' . $type . '/' . $file . ($cachebusting ? '?v=' . filemtime(ROOT . "assets/$type/$file") : '');
+    return url() . 'assets/' . $type . '/' . $file . ($cachebusting ? '?v=' . filemtime(ROOT . "public/assets/$type/$file") : '');
 }
 
+/**
+ * @param $route
+ * @param ?array $var
+ * @return string
+ */
 function route($route, $var = null) {
+
+    $routes = include('routes.php');
+
+    if (isset($routes[$route][1])) {
+        $uri = trim($routes[$route][1], '/');
+    } else {
+        $uri = $route;
+    }
+
     $params = '';
     if (is_array($var)) {
         foreach ($var as $k => $v) {
-            $params .= "&$k=$v";
+            // On remplace les paramètres de la route par $var
+            $uri = preg_replace('/{' . $k . ':?([a-zA-Z0-9-_.|+\\\]+)?}/', $v, $uri, -1, $count);
+            if ($count > 0) {
+                unset($var[$k]);
+            }
+        }
+        if (!empty($var)) {
+            $params = http_build_query($var);
         }
     } elseif (intval($var) > 0) {
-        $params = "&id=$var";
+        $uri = preg_replace('/\{id:(.*)\}/', $var, $uri);
     } else {
         $params = $var;
     }
-    return site_url() . 'index.php?p=' . $route . $params;
-}
 
-/**
- * Convert a value to studly caps case.
- *
- * @param  string $value
- * @return string
- */
-function studly_case($value) {
-    return Str::studly($value);
-}
+    if (!empty($params) && strpos($uri, '?') === false && strpos($params, '?') === false) {
+        $params = "?" . $params;
+    }
 
-/**
- * Convert a value to camel case.
- *
- * @param  string $value
- * @return string
- */
-function camel_case($value) {
-    return Str::camel($value);
+    return url() . $uri . $params;
 }
 
 /**
  * Get the class "basename" of the given object / class.
  *
- * @param  string|object $class
+ * @param string|object $class
  * @return string
  */
 function class_basename($class) {
@@ -94,24 +99,10 @@ function class_basename($class) {
 }
 
 /**
- * Convert a value to title case.
- *
- * @param  string $value
- * @return string
- */
-function title_case($value) {
-    return Str::title($value);
-}
-
-/**
  * @return bool
  */
 function isDev() {
-    return defined('DEBUG') && DEBUG === true;
-}
-
-function quote($str) {
-    return \App\Core\Sql::$instance->quote($str);
+    return getenv('MODE') !== 'production';
 }
 
 /**
@@ -138,38 +129,4 @@ function json($data) {
     }
     echo json_encode($data);
     exit();
-}
-
-function getFileInfo($filename) {
-    if (file_exists($filename)) {
-        $fileExt = null;
-        $expl = explode('.', $filename);
-        if (count($expl) >= 2) {
-            $info['extension'] = strtolower($expl[count($expl) - 1]);
-            $info['filename'] = $filename;
-            if ($info['extension'] == 'png' || $info['extension'] == 'jpg' || $info['extension'] == 'jpeg' || $info['extension'] == 'bmp' || $info['extension'] == 'gif') {
-                $info['type'] = 'image';
-            } else {
-                $info['type'] = $info['extension'];
-            }
-            $fileSize = filesize($filename);
-            if ($fileSize > 1000000000) {
-                $info['pretty-size'] = round($fileSize / 1000000000, 2) . ' Go';
-            } elseif ($fileSize > 1000000) {
-                $info['pretty-size'] = round($fileSize / 1000000, 2) . ' Mo';
-            } else {
-                $info['pretty-size'] = round($fileSize / 1000, 2) . ' ko';
-            }
-            return $info;
-        }
-    }
-    return null;
-}
-
-function str_lreplace($search, $replace, $subject) {
-    $pos = strrpos($subject, $search);
-    if ($pos !== false) {
-        $subject = substr_replace($subject, $replace, $pos, strlen($search));
-    }
-    return $subject;
 }

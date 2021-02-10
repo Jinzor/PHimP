@@ -1,4 +1,4 @@
-// @import "fonts";
+//@import "fonts";
 
 // Fonts
 $font1: 'Heebo', sans-serif;
@@ -21,14 +21,19 @@ $dark-text: #eaeaea;
 
 $font-dark: #212121;
 $font-light: #685f5f;
+$text-color-gray: #697386;
 $link-text: #3297d3;
 
 $greyUltraLight: #fafafa;
 $selectedOnWhite: #f6f7f9;
 $disabled: #9a9a9a;
 
+$field-bg: #f5f6f8;
+$night: #192a45;
+
 // Common CSS
 @import "base/all";
+@import "backoffice/all";
 
 // Style custom
 @import "site";
